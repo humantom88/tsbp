@@ -1,0 +1,33 @@
+{
+  "name": "tutorials",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^15.0.0",
+    "@types/react-dom": "^0.14.20",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.0-beta.18",
+    "css-loader": "^0.26.1",
+    "postcss-for": "^2.1.1",
+    "postcss-loader": "^1.2.2",
+    "postcss-nested": "^1.0.0",
+    "source-map-loader": "^0.1.6",
+    "style-loader": "^0.13.1",
+    "typed-css-modules": "^0.1.13",
+    "typed-css-modules-loader": "0.0.4",
+    "typescript": "^2.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git"
+  }
+}

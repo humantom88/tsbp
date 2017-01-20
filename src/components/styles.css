@@ -1,0 +1,10 @@
+.hello {
+    background-color: #294e80;
+    color: white;
+    margin-top: 0px;
+    text-align: center;
+    span {
+        color: #ddd;
+        text-transform: capitalize;
+    }
+}

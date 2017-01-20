@@ -1,23 +1,39 @@
+var path = require('path');
+var webpack = require('webpack');
+
 module.exports = {
-    entry: "./src/index.tsx",
+    devtool: 'source-map',
+    entry: './src/index.tsx',
     output: {
-        filename: "bundle.js",
-        path: __dirname + "/dist"
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/static/'
     },
 
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    devServer: {
+        proxy: [{
+            path: '/api/',
+            target: 'http://localhost:3001'
+        }]
+    },
 
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
     },
 
     module: {
         loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+            { 
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+                include: path.join(__dirname, 'src')
+            },
             {
+                test: /\.js|\.jsx$/,
+                exclude: /node_modules/,
+                loaders: ['babel'],
+                include: path.join(__dirname, 'src')
+            },{
                 test: /\.css$/,
                 exclude: /node_modules/,
                 loaders: [
@@ -30,8 +46,7 @@ module.exports = {
         ],
 
         preLoaders: [
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { test: /\.js$/, loader: "source-map-loader" }
+            { test: /\.js$/, loader: 'source-map-loader' }
         ]
     }
 }

@@ -10,8 +10,7 @@ export interface TSCTypesProps {
     array2Type: string[],
     turpleType: [string, number],
     enumType: Corps,
-    notSureType: any,
-    sayHello: void
+    notSureType: any
 }
 
 //export const Hello = (props: HelloProps) => <h1>Hello from {props.compiler} and {props.framework}!</h1>;
@@ -21,13 +20,13 @@ export class TSCTypes extends React.Component<TSCTypesProps, undefined> {
         return (
             <div>
                 <ul>
-                    <li>{this.props.booleanType}</li>
-                    <li>{this.props.numberType}</li>
-                    <li>{this.props.stringType}</li>
-                    <li>{this.props.arrayType}</li>
-                    <li>{this.props.array2Type}</li>
-                    <li>{this.props.enumType}</li>
-                    <li>{this.props.notSureType}</li>
+                    <li>{`boolean: ${this.props.booleanType ? 'true' : 'false'}`}</li>
+                    <li>{`number: ${this.props.numberType}`}</li>
+                    <li>{`string: ${this.props.stringType}`}</li>
+                    <li>{`array: ${this.props.arrayType}`}</li>
+                    <li>{`array2: ${this.props.array2Type}`}</li>
+                    <li>{`enum: ${this.props.enumType}`}</li>
+                    <li>{`notSure: ${this.props.notSureType}`}</li>
                 </ul>
             </div>
         );

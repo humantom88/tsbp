@@ -1,7 +1,8 @@
 import * as React from "react";
+const Dendy = require('dendy');
 const classnames = require('classnames');
+const styles = require('./styles.css');
 const rom = require('./rom.nes');
-const NesNes = require('nesnes');
 
 interface INesProps {
     mute?: true
@@ -41,19 +42,19 @@ export class Nes extends React.Component<INesProps, INesState> {
     }
 
     componentDidMount () {
-        this.em = new NesNes(this.canvas);
+        this.em = new Dendy(this.canvas);
         this.em.load(rom);
     }
 
     public render(): JSX.Element {
         return (
-            <div>
-                <div>
-                    <input type="button" onClick={this.handleControlButtonClick('play')} value={'Play'}/>
-                    <input type="button" onClick={this.handleControlButtonClick('reset')} value={'Reset'}/>
-                    <input type="button" onClick={this.handleControlButtonClick('toggle')} value={'Pause'}/>
+            <div className={styles.panel}>
+                <div className={styles.controls}>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('play')} value={'PLAY'}/>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('reset')} value={'RESET'}/>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('toggle')} value={'PAUSE'}/>
                 </div>
-                <canvas ref={this.setRef} className={classnames()}>
+                <canvas ref={this.setRef} className={styles.window}>
                     If you can see me, then nothing works
                 </canvas>
             </div>

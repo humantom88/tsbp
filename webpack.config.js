@@ -26,7 +26,7 @@ module.exports = {
     module: {
         loaders: [{
             test: /\.nes$/,
-            loader: 'file-loader'
+            loader: 'file-loader',
         }, {
             test: /\.json$/,
             loader: 'json-loader'

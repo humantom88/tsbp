@@ -1,0 +1,29 @@
+.panel {
+    width: 100%;
+    text-align: center;
+    .controls {
+        margin-bottom: 10px;
+        .button {
+            outline: none;
+            display: inline;
+            background-color: #294e80;
+            border: 1px solid #fff;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 5px;
+            font-family: 'Arial';
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                background-color: #eee;
+                color: #000;
+            }
+        }
+    }
+    .window{
+        height: 480px;
+        width: 640px;
+        display: inherit;
+        margin: auto;
+    }
+}

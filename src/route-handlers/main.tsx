@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Hello } from "../components/common/hello/Hello"
 import { TSCTypes } from "../components/common/types/Types"
-
+import { Nes } from '../components/common/nes/nes'
 interface MainProps {
     children: Node
 }
@@ -23,6 +23,7 @@ export class Main extends React.Component<MainProps, MainState> {
                     enumType={0}
                     notSureType={'string for example'}
                 />
+                <Nes />
             </div>
         )
     }

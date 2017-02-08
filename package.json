@@ -36,6 +36,7 @@
     "concurrently": "^3.1.0",
     "css-loader": "^0.26.1",
     "file-loader": "^0.10.0",
+    "json-loader": "^0.5.4",
     "nesnes": "^0.3.1",
     "postcss-for": "^2.1.1",
     "postcss-loader": "^1.2.2",

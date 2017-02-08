@@ -34,7 +34,6 @@ export class Nes extends React.Component<INesProps, INesState> {
             default:
                 break;
         }
-        this.em.play();
     }
 
     constructor () {

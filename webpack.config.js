@@ -27,10 +27,10 @@ module.exports = {
         loaders: [{
             test: /\.nes$/,
             loader: 'file-loader'
-        },{
+        }, {
             test: /\.json$/,
             loader: 'json-loader'
-        },{ 
+        }, {
             test: /\.tsx?$/,
             loader: 'awesome-typescript-loader',
             exclude: /node_modules/,
@@ -46,8 +46,8 @@ module.exports = {
             test: /\.css$/,
             exclude: /node_modules/,
             loaders: [
-                'style-loader', 
-                'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 
+                'style-loader',
+                'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
                 'typed-css-modules-loader',
                 'postcss-loader'
             ]

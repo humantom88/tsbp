@@ -50,9 +50,9 @@ export class Nes extends React.Component<INesProps, INesState> {
         return (
             <div className={styles.panel}>
                 <div className={styles.controls}>
-                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('play')} value={'PLAY'}/>
-                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('reset')} value={'RESET'}/>
-                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('toggle')} value={'PAUSE'}/>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('play')} value={'▶️'}/>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('reset')} value={'↻'}/>
+                    <input className={styles.button} type="button" onClick={this.handleControlButtonClick('toggle')} value={'❚❚'}/>
                 </div>
                 <canvas ref={this.setRef} className={styles.window}>
                     If you can see me, then nothing works

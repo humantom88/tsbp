@@ -1,1 +1,0 @@
-export { Physics } from './physics'

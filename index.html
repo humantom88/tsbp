@@ -2,46 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MVR</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 13px Helvetica, Arial; }
-        #blocker {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        #instructions {
-            width: 100%;
-            height: 100%;
-            display: -webkit-box;
-            display: -moz-box;
-            display: box;
-            -webkit-box-orient: horizontal;
-            -moz-box-orient: horizontal;
-            box-orient: horizontal;
-            -webkit-box-pack: center;
-            -moz-box-pack: center;
-            box-pack: center;
-            -webkit-box-align: center;
-            -moz-box-align: center;
-            box-align: center;
-            color: #ffffff;
-            text-align: center;
-            cursor: pointer;
-        }
-    </style>
+    <title>Hello React!</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div id="blocker">
-        <div id="instructions">
-            <span style="font-size:40px">Click to start</span>
-            <br />
-            <!--(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)-->
-        </div>
-    </div>
+    <div id="example"></div>
     <script src="http://localhost:8080/static/bundle.js"></script>
 </body>
 </html>

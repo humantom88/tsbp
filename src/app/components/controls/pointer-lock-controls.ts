@@ -73,7 +73,7 @@ class PointerLock {
         this.initPointerLock()
         this.initPosition()
         this.setCamera(camera)
-        this.setCannonBody(cannonBody)
+        this.initCannonBody(cannonBody)
         this.initPitchObject()
         this.initYawObject()
         this.initFlags()
@@ -81,12 +81,16 @@ class PointerLock {
         this.setUpAxis()
         this.initEventListeners()
         this.setEnabled(false)
-        
         this.quat = new Quaternion()
 
         // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
         this.initInputVelocity()
         this.initEuler()
+    }
+
+    private initCannonBody(cannonBody: Body) {
+        this.setCannonBody(cannonBody)
+        this.cannonBody.addEventListener('collide', this.collide)
     }
 
     public initInputVelocity() : void {
@@ -101,8 +105,7 @@ class PointerLock {
         }
     }
     
-    private initEventListeners() {
-        this.cannonBody.addEventListener('collide', this.collide)
+    private initEventListeners = () : void => {
         document.addEventListener('mousemove', this.onMouseMove, false)
         document.addEventListener('keydown', this.onKeyDown, false)
         document.addEventListener('keyup', this.onKeyUp, false)
@@ -319,14 +322,15 @@ class PointerLock {
 
         // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
         // We do not yet know which one is which! Let's check.
-        if (contact.bi.id == this.cannonBody.id)  // bi is the player body, flip the contact normal
+        if (contact.bi.id == this.cannonBody.id) { // bi is the player body, flip the contact normal
             contact.ni.negate(this.contactNormal)
-        else
+        } else {
             this.contactNormal.copy(contact.ni) // bi is something else. Keep the normal as it is
-
+        }
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if (this.contactNormal.dot(this.getUpAxis()) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+        if (this.contactNormal.dot(this.getUpAxis()) > 0.5) { // Use a "good" threshold value between 0 and 1 here!
             this.canJump = true
+        }
     }
 }
 

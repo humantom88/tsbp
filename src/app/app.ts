@@ -1,6 +1,6 @@
 import { Camera, WebGLRenderer, PCFSoftShadowMap, Scene } from 'three';
 import { Physics } from './components/physics';
-import { Perspective } from './components/cameras'
+import { Perspective, Orthographic } from './components/cameras'
 import { PointerLock } from './components/controls';
 import { GameScene } from './components/scenes/game-scene';
 
@@ -11,7 +11,7 @@ interface Runnable {
 class App implements Runnable {
     private title: string;
     private scene: GameScene;
-    private camera: Perspective;
+    private camera: Perspective | Orthographic;
     private controls: PointerLock;
     private renderer: WebGLRenderer;
     private physics: Physics;
@@ -26,15 +26,15 @@ class App implements Runnable {
         this.time = time
     }
 
-    public getScene(): Scene {
-        return this.scene.getScene()
+    public getScene() : Scene {
+        return this.scene.getScene() // TODO: Dependency Injection
     }
 
     public constructor(title: string) {
         this.title = title;
-        this.initScene();
-        this.initCamera();
         this.initPhysics();
+        this.initScene(this.physics);
+        this.initCamera();        
         this.initControls();
         this.initRenderer();
     }
@@ -43,8 +43,9 @@ class App implements Runnable {
         this.physics = new Physics();
     }
 
-    private initScene = () : void => {
-        this.scene = new GameScene();
+    private initScene = (physics : Physics) : void => {
+        this.scene = new GameScene(physics);
+        this.scene.addBoxes();
     }
 
     private initCamera = () : void => {
@@ -79,10 +80,7 @@ class App implements Runnable {
             // }
 
             // Update box positions
-            // for (let i = 0; i < this.boxes.length; i++) {
-            //     this.boxMeshes[i].position.copy(this.boxes[i].position)
-            //     this.boxMeshes[i].quaternion.copy(this.boxes[i].quaternion)
-            // }
+            this.scene.animateBoxes()
             // TWEEN.update()
         }
 

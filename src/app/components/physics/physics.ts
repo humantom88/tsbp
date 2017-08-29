@@ -59,7 +59,7 @@ class Physics {
             new Vec3(1, 0, 0),
             -Math.PI / 2
         )
-        this.world.bodies.push(groundBody)
+        this.world.addBody(groundBody)
     }
 
     private initSphere() : void {
@@ -69,7 +69,7 @@ class Physics {
         this.sphereBody.addShape(this.sphereShape)
         this.sphereBody.position.set(0, 5, 0)
         this.sphereBody.linearDamping = 0.9
-        this.world.bodies.push(this.sphereBody)
+        this.world.addBody(this.sphereBody)
     }
     
     constructor() {

@@ -1,5 +1,6 @@
-import { Camera, PerspectiveCamera, WebGLRenderer, PCFSoftShadowMap, Scene } from 'three';
+import { Camera, WebGLRenderer, PCFSoftShadowMap, Scene } from 'three';
 import { Physics } from './components/physics';
+import { Perspective } from './components/cameras'
 import { PointerLock } from './components/controls';
 import { GameScene } from './components/scenes/game-scene';
 
@@ -10,7 +11,7 @@ interface Runnable {
 class App implements Runnable {
     private title: string;
     private scene: GameScene;
-    private camera: Camera;
+    private camera: Perspective;
     private controls: PointerLock;
     private renderer: WebGLRenderer;
     private physics: Physics;
@@ -47,12 +48,11 @@ class App implements Runnable {
     }
 
     private initCamera = () : void => {
-        this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // this.camera.lookAt(this.scene.getScene().position);
+        this.camera = new Perspective();
     }
 
     public getCamera () : Camera {
-        return this.camera
+        return this.camera.getInstance()
     }
 
     private initControls = () : void => {

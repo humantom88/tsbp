@@ -2,7 +2,7 @@ import { TextureLoader, Texture, MeshPhongMaterial,
     RepeatWrapping, Vector2, PlaneBufferGeometry,
     Mesh, FlatShading } from 'three'
 
-const image = require('./images/wood.jpg')
+const image = require('./images/sand.jpg')
 
 class Floor {
     private floorTexture: Texture;

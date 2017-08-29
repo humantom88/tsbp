@@ -72,8 +72,8 @@ class PointerLock {
     constructor(camera: Camera, cannonBody: Body) {
         this.initPointerLock()
         this.initPosition()
-        this.setCamera(camera)
-        this.initCannonBody(cannonBody)
+        this.setCamera(camera)          // TODO: Dependency Injection
+        this.initCannonBody(cannonBody) // TODO: Dependency Injection
         this.initPitchObject()
         this.initYawObject()
         this.initFlags()
@@ -276,7 +276,7 @@ class PointerLock {
     }
 
     update = (delta : number) => {
-        if (this.enabled === false) return
+        if (!this.getEnabled()) return
 
         delta *= 0.5
 

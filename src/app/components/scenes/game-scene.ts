@@ -8,8 +8,7 @@ class GameScene {
     private sky: Sky;
     private floor: Floor;
     private lights: {
-        ambient: Ambient,
-        directional: Directional
+        ambient: Ambient
     }
 
     constructor() {
@@ -26,12 +25,10 @@ class GameScene {
     
     private initLights() : void {
         this.lights = {
-            ambient: new Ambient(),
-            directional: new Directional()
+            ambient: new Ambient()
         }
 
         this.scene.add(this.lights.ambient.getInstance());
-        this.scene.add(this.lights.directional.getInstance());
     }
 
     private fillScene() : void {

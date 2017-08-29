@@ -4,7 +4,7 @@ class Ambient {
     private light: AmbientLight;
     
     constructor() {
-        this.light = new AmbientLight(0x333333);
+        this.light = new AmbientLight(0xeaeaea);
     }
 
     public getInstance() : AmbientLight {

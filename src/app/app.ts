@@ -45,7 +45,8 @@ class App implements Runnable {
 
     private initScene = (physics : Physics) : void => {
         this.scene = new GameScene(physics);
-        this.scene.addBoxes();
+        this.scene.addBall();
+        // this.scene.addBoxes();
     }
 
     private initCamera = () : void => {
@@ -80,7 +81,7 @@ class App implements Runnable {
             // }
 
             // Update box positions
-            this.scene.animateBoxes()
+            this.scene.animate()
             // TWEEN.update()
         }
 

@@ -1,5 +1,6 @@
 import { Scene, Light, Object3D, Mesh, Vector3, Quaternion } from 'three'
 import { Box as ModelBox } from '../shapes/box'
+import { Ball as ModelBall } from '../shapes/ball'
 import { Body } from 'cannon'
 import { Physics } from '../physics'
 import { Ambient, Directional } from '../lights'
@@ -15,6 +16,8 @@ class GameScene {
         ambient: Ambient,
         // directional: Directional
     }
+    private ball : Body
+    private ballMesh : Mesh
     // --- For example only ---
     private boxes : Array<Body>
     private boxMeshes : Array<Mesh>
@@ -71,6 +74,33 @@ class GameScene {
         return null;
     }
     
+    public addBall() : void {
+        const ball = new ModelBall();
+        this.ball = ball.getBody();
+        this.ball.position.set(2, 2, 2);
+        this.ballMesh = ball.getMesh();
+        this.physics.getWorld().addBody(this.ball) 
+        this.scene.add(this.ballMesh)
+    }
+
+    public animateBall() {
+        this.ballMesh.position.copy(
+            new Vector3(
+                this.ball.position.x,
+                this.ball.position.y,
+                this.ball.position.z
+            )
+        )
+        this.ballMesh.quaternion.copy(
+            new Quaternion(
+                this.ball.quaternion.x,
+                this.ball.quaternion.y,
+                this.ball.quaternion.z,
+                this.ball.quaternion.w
+            )
+        )
+    }
+
     // For example only
     public addBoxes() : void {
         const { boxes, boxMeshes } = this.generateBoxes()
@@ -81,6 +111,7 @@ class GameScene {
             this.scene.add(this.boxMeshes[i])
         }
     }
+
     // For example only
     public generateBoxes(
         boxCount : number = 200,
@@ -109,6 +140,10 @@ class GameScene {
             boxMeshes.push(box.getBoxMesh())
         }
         return { boxes, boxMeshes }
+    }
+
+    public animate() {
+        this.animateBoxes
     }
 
     public animateBoxes() {

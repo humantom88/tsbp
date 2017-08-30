@@ -33,9 +33,9 @@ class Physics {
         this.setWorld();
         this.world.quatNormalizeSkip = 0
         this.world.quatNormalizeFast = false
-        this.world.defaultContactMaterial.contactEquationStiffness = 1e9
+        this.world.defaultContactMaterial.contactEquationStiffness = 1e3
         this.world.defaultContactMaterial.contactEquationRelaxation = 4
-        this.world.gravity.set(0, -20, 0)
+        this.world.gravity.set(0, -10, 0)
         this.world.broadphase = new NaiveBroadphase()
 
         // Create a slippery material (friction coefficient = 0.0)

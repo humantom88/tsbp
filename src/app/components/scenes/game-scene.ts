@@ -77,11 +77,11 @@ class GameScene {
     
     public addBall() : void {
         const ball = new ModelBall({
-            radius: 1,
-            weight: 0.1,
+            radius: 5,
+            weight: 0.01,
             polygonsQuantity: 64,
             position: {
-                x: 10, y: 0, z: 0
+                x: 0, y: 100, z: -10
             }
         })
 

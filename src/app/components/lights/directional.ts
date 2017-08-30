@@ -11,7 +11,7 @@ class Directional {
         this.light.castShadow = true
         this.light.shadow.mapSize.width = 1024
         this.light.shadow.mapSize.height = 1024
-            
+
         const d = 300
         this.light.shadow.camera.left = -d
         this.light.shadow.camera.right = d

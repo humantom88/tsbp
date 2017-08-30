@@ -77,7 +77,7 @@ class GameScene {
     
     public addBall() : void {
         const ball = new ModelBall({
-            radius: 0.4,
+            radius: 1,
             weight: 0.1,
             polygonsQuantity: 64,
             position: {
@@ -111,7 +111,10 @@ class GameScene {
 
     public addPoles() : void {
         const poles : Mesh[] = createPoles();
-        poles.forEach(pole => this.scene.add(pole))
+        poles.forEach(pole => {
+            console.log(pole)
+            this.scene.add(pole)
+        })
     }
 
     // For example only

@@ -6,15 +6,15 @@ class Pole {
     private mesh : Mesh;
 
     constructor(width: number, height: number, depth: number, x: number, y: number) {
-        this.poleGeo = new BoxGeometry( 5, 375, 5 );
+        this.poleGeo = new BoxGeometry( width, height, depth );
         this.poleMat = new MeshPhongMaterial({ color: 0xffffff, specular: 0x111111, shininess: 100 });
         this.initMesh(x, y);
     }
 
     private initMesh(x : number, y : number) {
         this.mesh = new Mesh( this.poleGeo, this.poleMat );
-        this.mesh.position.x = - 125;
-        this.mesh.position.y = - 62;
+        this.mesh.position.x = x;
+        this.mesh.position.y = y;
         this.mesh.receiveShadow = true;
         this.mesh.castShadow = true;
     }
@@ -26,7 +26,6 @@ class Pole {
 
 function createPoles () : Array<Mesh> {
     const poles : Array<Mesh> = []
-
     poles.push(new Pole(1, 75 , 1, -25, - 12).getInstance())
     poles.push(new Pole(1, 75, 1, 25, -12).getInstance())
     poles.push(new Pole(51, 1, 1, 0, - 50 + (150 / 2)).getInstance())

@@ -6,6 +6,7 @@ import { Physics } from '../physics'
 import { Ambient, Directional } from '../lights'
 import { Sky } from '../skies/sky'
 import { Floor } from '../terrains/floor'
+import { createPoles } from '../shapes/pole'
 
 class GameScene {
     private scene: Scene;
@@ -106,6 +107,11 @@ class GameScene {
                 this.ball.quaternion.w
             )
         )
+    }
+
+    public addPoles() : void {
+        const poles : Mesh[] = createPoles();
+        poles.forEach(pole => this.scene.add(pole))
     }
 
     // For example only

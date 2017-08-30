@@ -46,6 +46,7 @@ class App implements Runnable {
     private initScene = (physics : Physics) : void => {
         this.scene = new GameScene(physics);
         this.scene.addBall();
+        this.scene.addPoles();
         // this.scene.addBoxes();
     }
 

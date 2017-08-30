@@ -75,15 +75,22 @@ class GameScene {
     }
     
     public addBall() : void {
-        const ball = new ModelBall();
-        this.ball = ball.getBody();
-        this.ball.position.set(2, 2, 2);
-        this.ballMesh = ball.getMesh();
+        const ball = new ModelBall({
+            radius: 0.4,
+            weight: 0.1,
+            polygonsQuantity: 64,
+            position: {
+                x: 10, y: 0, z: 0
+            }
+        })
+
+        this.ball = ball.getBody()
+        this.ballMesh = ball.getMesh()
         this.physics.getWorld().addBody(this.ball) 
         this.scene.add(this.ballMesh)
     }
 
-    public animateBall() {
+    public animateBall() : void {
         this.ballMesh.position.copy(
             new Vector3(
                 this.ball.position.x,
@@ -143,7 +150,7 @@ class GameScene {
     }
 
     public animate() {
-        this.animateBoxes
+        this.animateBall();
     }
 
     public animateBoxes() {

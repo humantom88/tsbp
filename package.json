@@ -19,6 +19,7 @@
     "three": "^0.87.1"
   },
   "devDependencies": {
+    "@types/dat-gui": "^0.6.3",
     "autoprefixer": "^6.6.1",
     "awesome-typescript-loader": "^3.0.3",
     "babel-core": "^6.22.1",
@@ -30,6 +31,7 @@
     "classnames": "^2.2.5",
     "concurrently": "^3.1.0",
     "css-loader": "^0.26.1",
+    "dat-gui": "^0.5.0",
     "file-loader": "^0.10.0",
     "json-loader": "^0.5.4",
     "postcss-for": "^2.1.1",

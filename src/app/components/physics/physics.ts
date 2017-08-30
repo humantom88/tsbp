@@ -44,8 +44,8 @@ class Physics {
         let physicsContactMaterial = new ContactMaterial(
             physicsMaterial,
             physicsMaterial, {
-                friction: 0.0,
-                restitution: 0.3
+                friction: 10,
+                restitution: 1
             }
         )
         // We must add the contact materials to the world

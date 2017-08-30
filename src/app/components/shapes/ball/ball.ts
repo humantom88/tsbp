@@ -1,6 +1,7 @@
 import { Mesh, Texture, Material,
     SphereGeometry, MeshLambertMaterial,
-    TextureLoader, RepeatWrapping, DoubleSide } from 'three'
+    TextureLoader, RepeatWrapping,
+    DoubleSide, Vector3 } from 'three'
 import { Vec3, Sphere, Body } from 'cannon'
 
 const image = require('./images/ball.jpg')
@@ -19,8 +20,8 @@ class Ball {
     }
 
     public setPosition(x : number, y : number, z : number) : void {
-        this.ballBody.position.set(x, y, z)
-        this.ballMesh.position.set(x, y, z)
+        this.ballBody.position = new Vec3(x, y, z);
+        this.ballMesh.position = new Vector3(x, y, z);
     }
 
     public getBody() : Body {
@@ -41,7 +42,18 @@ class Ball {
         shape: this.ballShape
     })
 
-    constructor(radius : number = 0.2, weight : number = 0.2, polygonsQuantity : number = 32, color? : string) {
+    constructor(options: {
+        radius : number,
+        weight : number,
+        polygonsQuantity : number,
+        color? : string,
+        position?: {
+            x: number,
+            y: number,
+            z: number
+        }
+    }) {
+        const { radius, polygonsQuantity, weight, position, color } = options;
         this.ballShape = new Sphere(radius)
         this.ballGeometry = new SphereGeometry(this.ballShape.radius, polygonsQuantity, polygonsQuantity )
         this.ballBody = new Body({ mass: weight })
@@ -55,7 +67,7 @@ class Ball {
        
         this.initMesh()
 
-        this.ballBody.position.set(10, 10, 1);
+        this.ballBody.position.set(position.x || 0, position.y || 10, position.z || 10);
     }
 
     private initMesh() {

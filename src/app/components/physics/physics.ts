@@ -29,13 +29,31 @@ class Physics {
         return this.solver
     }
 
+    public getWorld() : World {
+        return this.world;
+    }
+
+    public getShape() : Sphere {
+        return this.sphereShape;
+    }
+
+    public getBody() : Body {
+        return this.sphereBody;
+    }
+
+    constructor() {
+        this.initWorld();
+        this.initSphere();
+        this.initSolver();
+    }
+
     private initWorld() : void {
         this.setWorld();
         this.world.quatNormalizeSkip = 0
         this.world.quatNormalizeFast = false
         this.world.defaultContactMaterial.contactEquationStiffness = 1e3
         this.world.defaultContactMaterial.contactEquationRelaxation = 4
-        this.world.gravity.set(0, -10, 0)
+        this.world.gravity.set(0, -20, 0)
         this.world.broadphase = new NaiveBroadphase()
 
         // Create a slippery material (friction coefficient = 0.0)
@@ -67,27 +85,10 @@ class Physics {
         this.sphereShape = new Sphere(radius)
         this.sphereBody = new Body({ mass: mass })
         this.sphereBody.addShape(this.sphereShape)
-        this.sphereBody.position.set(0, 5, 0)
+        this.sphereBody.position.set(0, 0, 50)
+        // this.sphereBody.quaternion.set(0, 0, 0, 10)
         this.sphereBody.linearDamping = 0.9
         this.world.addBody(this.sphereBody)
-    }
-    
-    constructor() {
-        this.initWorld();
-        this.initSphere();
-        this.initSolver();
-    }
-
-    public getWorld() : World {
-        return this.world;
-    }
-
-    public getShape() : Sphere {
-        return this.sphereShape;
-    }
-
-    public getBody() : Body {
-        return this.sphereBody;
     }
 
     private initSolver() : void {

@@ -114,7 +114,7 @@ class PointerLock {
     private initPosition() : void {
         this.eyeYPos = 2 // eyes are 2 meters above the ground
         this.velocityFactor = 0.3
-        this.jumpVelocity = 50
+        this.jumpVelocity = 75
     }
 
     private initPitchObject() : void {

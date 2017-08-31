@@ -1,17 +1,18 @@
 import { Mesh, Texture, Material,
     SphereGeometry, MeshLambertMaterial,
     TextureLoader, RepeatWrapping,
-    DoubleSide, Vector3 } from 'three'
+    DoubleSide, Vector3, Quaternion } from 'three'
 import { Vec3, Sphere, Body } from 'cannon'
+import { Physicable } from '../interfaces'
 
 const image = require('./images/ball.jpg')
 
-class Ball {
+class Ball implements Physicable {
     private vector : Vec3;
     private ballShape : Sphere;
     private ballGeometry : SphereGeometry;
-    private ballBody : Body;
-    private ballMesh: Mesh;
+    private body : Body;
+    private mesh: Mesh;
     private material : Material;
     private map : Texture;
 
@@ -20,16 +21,16 @@ class Ball {
     }
 
     public setPosition(x : number, y : number, z : number) : void {
-        this.ballBody.position = new Vec3(x, y, z);
-        this.ballMesh.position = new Vector3(x, y, z);
+        this.body.position = new Vec3(x, y, z);
+        this.mesh.position = new Vector3(x, y, z);
     }
 
     public getBody() : Body {
-        return this.ballBody
+        return this.body
     }
 
     public getMesh() : Mesh {
-        return this.ballMesh
+        return this.mesh
     }
     
     public getShape = () => {
@@ -37,8 +38,8 @@ class Ball {
     }
 
     public getBall = () => ({
-        body: this.ballBody,
-        mesh: this.ballMesh,
+        body: this.body,
+        mesh: this.mesh,
         shape: this.ballShape
     })
 
@@ -56,8 +57,8 @@ class Ball {
         const { radius, polygonsQuantity, weight, position, color } = options;
         this.ballShape = new Sphere(radius)
         this.ballGeometry = new SphereGeometry(this.ballShape.radius, polygonsQuantity, polygonsQuantity )
-        this.ballBody = new Body({ mass: weight })
-        this.ballBody.addShape(this.ballShape)
+        this.body = new Body({ mass: weight })
+        this.body.addShape(this.ballShape)
 
         if (color) {
             this.initColoredMaterial(color)
@@ -67,13 +68,13 @@ class Ball {
        
         this.initMesh()
 
-        this.ballBody.position.set(position.x || 0, position.y || 10, position.z || 10);
+        this.body.position.set(position.x || 0, position.y || 10, position.z || 10);
     }
 
     private initMesh() {
-        this.ballMesh = new Mesh(this.ballGeometry, this.material)
-        this.ballMesh.castShadow = true
-        this.ballMesh.receiveShadow = true
+        this.mesh = new Mesh(this.ballGeometry, this.material)
+        this.mesh.castShadow = true
+        this.mesh.receiveShadow = true
     }
 
     private initColoredMaterial(color : string) {
@@ -82,7 +83,8 @@ class Ball {
 
     private initTexturedMaterial () {
         this.map = new TextureLoader().load(image);
-        this.map.wrapS = this.map.wrapT = RepeatWrapping
+        this.map.wrapS = RepeatWrapping
+        this.map.wrapT = RepeatWrapping
         this.map.anisotropy = 16
 
         this.setMaterial(
@@ -90,6 +92,24 @@ class Ball {
                 map: this.map,
                 side: DoubleSide
             })
+        )
+    }
+
+    public synchronize() : void {
+        this.mesh.position.copy(
+            new Vector3(
+                this.body.position.x,
+                this.body.position.y,
+                this.body.position.z
+            )
+        )
+        this.mesh.quaternion.copy(
+            new Quaternion(
+                this.body.quaternion.x,
+                this.body.quaternion.y,
+                this.body.quaternion.z,
+                this.body.quaternion.w
+            )
         )
     }
 }

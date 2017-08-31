@@ -1,0 +1,1 @@
+export { Physicable } from './physicable'

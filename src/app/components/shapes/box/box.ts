@@ -1,15 +1,17 @@
 import { Vec3, Box as CannonBox, Body } from "cannon"
-import { Color, BoxGeometry, MeshLambertMaterial, Mesh, Material,
-    Texture, TextureLoader, RepeatWrapping, DoubleSide } from "three"
-
+import { Color, BoxGeometry, MeshLambertMaterial,
+    Mesh, Material, Texture, TextureLoader,
+    RepeatWrapping, DoubleSide, Vector3,
+    Quaternion } from "three"
+import { Physicable } from '../interfaces'
 const image = require('./images/box.jpg')
 
-class Box {
+class Box implements Physicable {
     private halfExtents : Vec3;
     private boxShape : CannonBox;
     private boxGeometry : BoxGeometry;
-    private boxBody : Body;
-    private boxMesh: Mesh;
+    private body : Body;
+    private mesh: Mesh;
     private material : Material;
     private map : Texture;
 
@@ -18,16 +20,16 @@ class Box {
     }
 
     public setPosition(x : number, y : number, z : number) : void {
-        this.boxBody.position.set(x, y, z)
-        this.boxMesh.position.set(x, y, z)
+        this.body.position.set(x, y, z)
+        this.mesh.position.set(x, y, z)
     }
 
-    public getBox() : Body {
-        return this.boxBody
+    public getBody() : Body {
+        return this.body
     }
 
-    public getBoxMesh() : Mesh {
-        return this.boxMesh
+    public getMesh() : Mesh {
+        return this.mesh
     }
 
     constructor(x : number, y : number, z : number, color? : string) {
@@ -38,8 +40,8 @@ class Box {
             this.halfExtents.y * 2,
             this.halfExtents.z * 2
         )
-        this.boxBody = new Body({ mass: 5 })
-        this.boxBody.addShape(this.boxShape)
+        this.body = new Body({ mass: 5 })
+        this.body.addShape(this.boxShape)
 
         if (color) {
             this.initColoredMaterial(color)
@@ -51,9 +53,9 @@ class Box {
     }
 
     private initMesh() {
-        this.boxMesh = new Mesh(this.boxGeometry, this.material)
-        this.boxMesh.castShadow = true
-        this.boxMesh.receiveShadow = true
+        this.mesh = new Mesh(this.boxGeometry, this.material)
+        this.mesh.castShadow = true
+        this.mesh.receiveShadow = true
     }
 
     private initColoredMaterial(color : string) {
@@ -72,6 +74,49 @@ class Box {
             })
         )
     }
+
+    public synchronize() : void {
+        this.mesh.position.copy(
+            new Vector3(
+                this.body.position.x,
+                this.body.position.y,
+                this.body.position.z
+            )
+        )
+        this.mesh.quaternion.copy(
+            new Quaternion(
+                this.body.quaternion.x,
+                this.body.quaternion.y,
+                this.body.quaternion.z,
+                this.body.quaternion.w
+            )
+        )
+    }
 }
 
-export { Box }
+// For example only
+function generateBoxes(
+    boxCount : number = 200,
+    posX : number = 0,
+    posY : number = 50,
+    posZ : number = -100
+) : Array<Box> {
+    const boxes = []
+    for (let i = 0; i < boxCount; i++) {
+        let x = (Math.random() - 0.5) * 20
+        let y = 1 + (Math.random() - 0.5) * 1
+        let z = (Math.random() - 0.5) * 20
+
+        let color = "#" + ((Math.random() * 0xffffff) << 0).toString(16)
+
+        // let box = new ModelBox(x, y, z, color)
+        let box = new Box(x, y, z)
+
+        box.setPosition(x + posX, y + posY, z + posZ)
+
+        boxes.push(box)
+    }
+    return boxes
+}
+
+export { Box, generateBoxes }

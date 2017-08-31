@@ -11,7 +11,7 @@ class Sky {
     private sky: Mesh;
 
     constructor() {
-        this.skySphere = new SphereGeometry(200, 25, 25)
+        this.skySphere = new SphereGeometry(900, 25, 25)
         this.texture = new TextureLoader().load(skyImage)
         this.texture.wrapS = RepeatWrapping
         this.texture.wrapT = RepeatWrapping

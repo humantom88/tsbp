@@ -1,1 +1,1 @@
-export { Box } from './box'
+export { Box, generateBoxes } from './box'

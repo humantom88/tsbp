@@ -1,5 +1,5 @@
-import { Scene, Light, Object3D, Mesh, Vector3, Quaternion } from 'three'
-import { Box as ModelBox } from '../shapes/box'
+import { Scene, Light, Object3D, Mesh, Vector3, Quaternion, Fog } from 'three'
+import { Box as ModelBox, generateBoxes } from '../shapes/box'
 import { Ball as ModelBall } from '../shapes/ball'
 import { Body } from 'cannon'
 import { Physics } from '../physics'
@@ -11,17 +11,16 @@ import { createPoles } from '../shapes/pole'
 class GameScene {
     private scene: Scene;
     private sky: Sky;
+    private fog: Fog;
     private floor: Floor;
     private physics: Physics;
     private lights: {
         ambient: Ambient,
         // directional: Directional
     }
-    private ball : Body
-    private ballMesh : Mesh
+    private ball : ModelBall
     // --- For example only ---
-    private boxes : Array<Body>
-    private boxMeshes : Array<Mesh>
+    private boxes : Array<ModelBox>
     // ------------------------
 
     public setPhysics(physics: Physics) : void {
@@ -33,6 +32,11 @@ class GameScene {
         this.fillScene()
         this.initLights()
         this.setPhysics(physics)
+        this.initFog()
+    }
+
+    private initFog() : void {
+        this.fog = new Fog(0xcce0ff, 500, 1000)
     }
 
     private initScene() : void {
@@ -76,102 +80,48 @@ class GameScene {
     }
     
     public addBall() : void {
-        const ball = new ModelBall({
+        this.ball = new ModelBall({
             radius: 5,
             weight: 0.01,
             polygonsQuantity: 64,
             position: {
-                x: 0, y: 100, z: -10
+                x: 0,
+                y: 100,
+                z: 25
             }
         })
-
-        this.ball = ball.getBody()
-        this.ballMesh = ball.getMesh()
-        this.physics.getWorld().addBody(this.ball) 
-        this.scene.add(this.ballMesh)
-    }
-
-    public animateBall() : void {
-        this.ballMesh.position.copy(
-            new Vector3(
-                this.ball.position.x,
-                this.ball.position.y,
-                this.ball.position.z
-            )
-        )
-        this.ballMesh.quaternion.copy(
-            new Quaternion(
-                this.ball.quaternion.x,
-                this.ball.quaternion.y,
-                this.ball.quaternion.z,
-                this.ball.quaternion.w
-            )
-        )
+        this.physics.getWorld().addBody(this.ball.getBody()) 
+        this.scene.add(this.ball.getMesh())
     }
 
     public addPoles() : void {
-        const poles : Mesh[] = createPoles();
+        const poles = createPoles();
         poles.forEach(pole => {
-            console.log(pole)
-            this.scene.add(pole)
+            this.scene.add(pole.getMesh())
         })
     }
 
     // For example only
     public addBoxes() : void {
-        const { boxes, boxMeshes } = this.generateBoxes()
+        const boxes = generateBoxes()
         this.boxes = boxes || []
-        this.boxMeshes = boxMeshes || []
         for (let i = 0; i < this.boxes.length; i++) {
-            this.physics.getWorld().addBody(this.boxes[i]) 
-            this.scene.add(this.boxMeshes[i])
+            this.physics.getWorld().addBody(this.boxes[i].getBody()) 
+            this.scene.add(this.boxes[i].getMesh())
         }
-    }
-
-    // For example only
-    public generateBoxes(
-        boxCount : number = 200,
-        posX : number = 0,
-        posY : number = 50,
-        posZ : number = -100
-    ) : {
-        boxes: Array<Body>,
-        boxMeshes: Array<Mesh>
-    } {
-        const boxes = []
-        const boxMeshes = []
-        for (let i = 0; i < boxCount; i++) {
-            let x = (Math.random() - 0.5) * 20
-            let y = 1 + (Math.random() - 0.5) * 1
-            let z = (Math.random() - 0.5) * 20
-    
-            let color = "#" + ((Math.random() * 0xffffff) << 0).toString(16)
-    
-            // let box = new ModelBox(x, y, z, color)
-            let box = new ModelBox(x, y, z)
-    
-            box.setPosition(x + posX, y + posY, z + posZ)
-    
-            boxes.push(box.getBox())
-            boxMeshes.push(box.getBoxMesh())
-        }
-        return { boxes, boxMeshes }
-    }
+    }    
 
     public animate() {
         this.animateBall();
     }
+    
+    public animateBall() : void {
+        this.ball.synchronize()
+    }
 
     public animateBoxes() {
         for (let i = 0; i < this.boxes.length; i++) {
-            this.boxMeshes[i].position.copy(
-                new Vector3(this.boxes[i].position.x, this.boxes[i].position.y, this.boxes[i].position.z)
-            )
-                
-            this.boxMeshes[i].quaternion.copy(
-                new Quaternion(this.boxes[i].quaternion.x, this.boxes[i].quaternion.y, this.boxes[i].quaternion.z, this.boxes[i].quaternion.w)
-            )
-            
+            this.boxes[i].synchronize()            
         }
     }
 }

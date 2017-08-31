@@ -3,10 +3,10 @@ import { Color, BoxGeometry, MeshLambertMaterial,
     Mesh, Material, Texture, TextureLoader,
     RepeatWrapping, DoubleSide, Vector3,
     Quaternion } from "three"
-import { Physicable } from '../interfaces'
+import { Syncronizable } from '../interfaces'
 const image = require('./images/box.jpg')
 
-class Box implements Physicable {
+class Box implements Syncronizable {
     private halfExtents : Vec3;
     private boxShape : CannonBox;
     private boxGeometry : BoxGeometry;

@@ -3,11 +3,11 @@ import { Mesh, Texture, Material,
     TextureLoader, RepeatWrapping,
     DoubleSide, Vector3, Quaternion } from 'three'
 import { Vec3, Sphere, Body } from 'cannon'
-import { Physicable } from '../interfaces'
+import { Syncronizable } from '../interfaces'
 
 const image = require('./images/ball.jpg')
 
-class Ball implements Physicable {
+class Ball implements Syncronizable {
     private vector : Vec3;
     private ballShape : Sphere;
     private ballGeometry : SphereGeometry;

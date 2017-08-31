@@ -1,1 +1,1 @@
-export { Physicable } from './physicable'
+export { Syncronizable } from './syncronizable'

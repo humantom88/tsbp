@@ -1,8 +1,8 @@
 import { BoxGeometry, MeshPhongMaterial, Mesh, Vector3, Quaternion } from 'three'
 import { Vec3, Box, Shape, Body } from 'cannon'
-import { Physicable } from '../interfaces'
+import { Syncronizable } from '../interfaces'
 
-class Pole implements Physicable {
+class Pole implements Syncronizable {
     private halfExtents : Vec3
     private poleGeo : BoxGeometry;
     private poleMat : MeshPhongMaterial;

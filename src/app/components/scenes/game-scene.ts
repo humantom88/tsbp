@@ -113,6 +113,7 @@ class GameScene {
 
     public animate() {
         this.animateBall();
+        this.animateBoxes();
     }
     
     public animateBall() : void {

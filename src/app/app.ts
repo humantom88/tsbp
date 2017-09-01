@@ -3,6 +3,9 @@ import { Physics } from './components/physics';
 import { Perspective, Orthographic } from './components/cameras'
 import { PointerLock } from './components/controls';
 import { GameScene } from './components/scenes/game-scene';
+import { StereoEffect } from './components/effects'
+
+const isVR = false
 
 interface Runnable {
     run() : void;
@@ -14,6 +17,7 @@ class App implements Runnable {
     private camera: Perspective | Orthographic;
     private controls: PointerLock;
     private renderer: WebGLRenderer;
+    private effect: StereoEffect;
     private physics: Physics;
     private dt : number = 1 / 60;
     private time = Date.now();
@@ -47,7 +51,7 @@ class App implements Runnable {
         this.scene = new GameScene(physics);
         this.scene.addBall();
         this.scene.addPoles();
-        // this.scene.addBoxes();
+        this.scene.addBoxes();
     }
 
     private initCamera = () : void => {
@@ -69,7 +73,12 @@ class App implements Runnable {
         this.renderer.shadowMap.type = PCFSoftShadowMap;
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-        document.body.appendChild(this.renderer.domElement);
+        if (isVR) {
+            this.effect = new StereoEffect(this.renderer);
+            document.body.appendChild(this.effect.getRenderer().domElement)
+        } else {
+            document.body.appendChild(this.renderer.domElement);
+        }
     }
 
     private render = () : void => {
@@ -88,7 +97,11 @@ class App implements Runnable {
 
         this.controls.update(Date.now() - this.getTime())
 
-        this.renderer.render(this.scene.getScene(), this.getCamera());
+        if (isVR) {
+            this.effect.render(this.scene.getScene(), this.getCamera());
+        } else {
+            this.renderer.render(this.scene.getScene(), this.getCamera());
+        }
 
         this.setTime(Date.now());
     }

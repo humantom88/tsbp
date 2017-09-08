@@ -95,6 +95,16 @@ class Ball implements Syncronizable {
         )
     }
 
+    public updateBodyCoordinates (coordinates: any) : void {
+        const { position, velocity, quaternion, angularVelocity } = coordinates;
+
+        this.body.position.set(position.x, position.y, position.z);
+        this.body.velocity.set(velocity.x, velocity.y, velocity.z);
+        this.body.quaternion.set(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        this.body.angularVelocity.set(angularVelocity.x, angularVelocity.y, angularVelocity.z)
+        this.synchronize()
+    }
+
     public synchronize() : void {
         this.mesh.position.copy(
             new Vector3(

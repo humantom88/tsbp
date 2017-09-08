@@ -3,7 +3,7 @@ import { Physics } from './components/physics';
 import { Perspective, Orthographic } from './components/cameras'
 import { PointerLock } from './components/controls';
 import { GameScene } from './components/scenes/game-scene';
-import { StereoEffect } from './components/effects'
+import { StereoEffect } from './components/effects';
 
 const isVR = false
 
@@ -21,6 +21,7 @@ class App implements Runnable {
     private physics: Physics;
     private dt : number = 1 / 60;
     private time = Date.now();
+    private socket: any;
 
     public getTime() : number {
         return this.time
@@ -34,13 +35,30 @@ class App implements Runnable {
         return this.scene.getScene() // TODO: Dependency Injection
     }
 
-    public constructor(title: string) {
+    public constructor(title: string, socket: any) {
         this.title = title;
+        this.initSocket(socket);
         this.initPhysics();
         this.initScene(this.physics);
         this.initCamera();        
         this.initControls();
         this.initRenderer();
+        this.initSocketListeners();
+    }
+
+    private initSocket(socket : any) : void {
+        this.socket = socket;
+    }
+
+    private initSocketListeners() : void {
+        this.socket.on('updateBallCoordinates',
+            (coordinates: any) => {
+                console.log('got coords')
+                if (coordinates) {
+                    this.scene.getBall().updateBodyCoordinates(coordinates);
+                }
+            }
+        )
     }
 
     private initPhysics() {
@@ -48,10 +66,10 @@ class App implements Runnable {
     }
 
     private initScene = (physics : Physics) : void => {
-        this.scene = new GameScene(physics);
+        this.scene = new GameScene(physics, this.socket);
         this.scene.addBall();
         this.scene.addPoles();
-        this.scene.addBoxes();
+        // this.scene.addBoxes();
     }
 
     private initCamera = () : void => {
@@ -64,6 +82,19 @@ class App implements Runnable {
 
     private initControls = () : void => {
         this.controls = new PointerLock(this.getCamera(), this.physics.getBody())
+        this.controls.getCannonBody().addEventListener('collide', (e: any) => {
+            if (e.contact.bi.id === this.controls.getCannonBody().id &&
+                e.contact.bj.id === this.scene.getBall().getBody().id
+            ) {
+                console.log(this.scene.getBall().getBody())
+                this.socket.emit('ballTouched', {
+                    position: this.scene.getBall().getBody().position,
+                    velocity: this.scene.getBall().getBody().velocity,
+                    quaternion: this.scene.getBall().getBody().quaternion,
+                    angularVelocity: this.scene.getBall().getBody().angularVelocity
+                })
+            }
+        })
         this.scene.getScene().add(this.controls.getYawObject())
     }
 
@@ -83,7 +114,7 @@ class App implements Runnable {
 
     private render = () : void => {
         requestAnimationFrame(this.render);
-        if (this.controls.getEnabled()) {
+        //if (this.controls.getEnabled()) {
             this.physics.getWorld().step(this.dt)
             // Update ball positions
             // for (let i = 0; i < this.gun.getBallsLength(); i++) {
@@ -93,7 +124,7 @@ class App implements Runnable {
             // Update box positions
             this.scene.animate()
             // TWEEN.update()
-        }
+        //}
 
         this.controls.update(Date.now() - this.getTime())
 

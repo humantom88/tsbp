@@ -1,5 +1,6 @@
 import { Scene, Light, Object3D, Mesh, Vector3, Quaternion, Fog } from 'three'
 import { Box as ModelBox, generateBoxes } from '../shapes/box'
+import * as _ from "lodash";
 import { Ball as ModelBall } from '../shapes/ball'
 import { Body } from 'cannon'
 import { Physics } from '../physics'
@@ -18,21 +19,31 @@ class GameScene {
         ambient: Ambient,
         // directional: Directional
     }
-    private ball : ModelBall
+    private ball : ModelBall;
+    private socket : any;
     // --- For example only ---
-    private boxes : Array<ModelBox>
+    private boxes : Array<ModelBox>;
     // ------------------------
+
+    public getBall () : ModelBall {
+        return this.ball;
+    }
 
     public setPhysics(physics: Physics) : void {
         this.physics = physics
     }
 
-    constructor(physics: Physics) {
+    constructor(physics: Physics, socket: any) {
+        this.setSocket(socket)
         this.initScene()
         this.fillScene()
         this.initLights()
         this.setPhysics(physics)
         this.initFog()
+    }
+
+    private setSocket (socket: any) : void {
+        this.socket = socket;
     }
 
     private initFog() : void {
@@ -111,9 +122,11 @@ class GameScene {
         }
     }    
 
-    public animate() {
+    public animate(socket? : any) {
         this.animateBall();
-        this.animateBoxes();
+        // this.animateBoxes();
+
+        let i = 0;
     }
     
     public animateBall() : void {

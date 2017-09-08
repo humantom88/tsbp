@@ -48,6 +48,10 @@ class PointerLock {
         this.camera = camera;
     }
 
+    public getCannonBody() : Body {
+        return this.cannonBody
+    }
+
     public setCannonBody(cannonBody: Body) : void {
         this.cannonBody = cannonBody;
     }

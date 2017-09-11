@@ -24,7 +24,6 @@ app.listen(port, 'localhost', function (err) {
 io.on('connection', function(socket) {
     console.log('a user connected')
     socket.on('ballTouched', function(coords) {
-        console.log('coords broadcasted');
         socket.broadcast.emit('updateBallCoordinates', coords);
     })
 })

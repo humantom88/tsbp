@@ -4,7 +4,7 @@ import * as io from 'socket.io-client';
 
 const config : Config = {
     isServerClient: false,
-    isVR: true
+    isVR: false
 }
 
 const socket = config.isServerClient

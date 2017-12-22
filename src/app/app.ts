@@ -38,6 +38,11 @@ class App implements Runnable {
         return this.scene.getScene() // TODO: Dependency Injection
     }
 
+    
+    public getCamera () : Camera {
+        return this.camera.getInstance()
+    }
+
     public constructor(title: string, config: Config, socket?: any) {
         this.title = title;
         this.config = config;
@@ -85,10 +90,6 @@ class App implements Runnable {
         this.camera = new Perspective();
     }
 
-    public getCamera () : Camera {
-        return this.camera.getInstance()
-    }
-
     private initControls = () : void => {
         this.controls = new PointerLock(this.getCamera(), this.physics.getBody())
         if (this.socket) {
@@ -112,7 +113,7 @@ class App implements Runnable {
         this.renderer = new WebGLRenderer();
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = PCFSoftShadowMap;
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(window.innerWidth - 3, window.innerHeight - 3);
 
         if (this.config.isVR) {
             this.effect = new StereoEffect(this.renderer);

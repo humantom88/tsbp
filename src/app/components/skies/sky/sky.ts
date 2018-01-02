@@ -21,7 +21,7 @@ class Sky {
         })
 
         this.sky = new Mesh(this.skySphere, this.material)
-        this.sky.material.side = BackSide
+        // this.sky.material.side = BackSide
     }
 
     getInstance() {

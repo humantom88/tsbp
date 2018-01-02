@@ -8,7 +8,7 @@ class Perspective {
     }
 
     constructor() {
-        this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
     }
 }
 

@@ -17,11 +17,15 @@ class Sky {
         this.texture.wrapT = RepeatWrapping
         this.texture.repeat = new Vector2(5, 5)
         this.material = new MeshPhongMaterial({
-            map: this.texture
+            map: this.texture,
+            side: BackSide
         })
 
         this.sky = new Mesh(this.skySphere, this.material)
+<<<<<<< HEAD
         // this.sky.material.side = BackSide
+=======
+>>>>>>> 19195e2c741a5082893aa7161298226650e5b1af
     }
 
     getInstance() {

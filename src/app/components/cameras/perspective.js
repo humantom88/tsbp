@@ -5,7 +5,7 @@ class Perspective {
     camera : PerspectiveCamera;
 
     getInstance() : PerspectiveCamera {
-        return this.camera
+        return this.camera;
     }
 
     constructor() {

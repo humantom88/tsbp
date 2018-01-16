@@ -113,7 +113,8 @@ class App implements Runnable {
         this.renderer = new WebGLRenderer();
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = PCFSoftShadowMap;
-        this.renderer.setSize(window.innerWidth - 3, window.innerHeight - 3);
+
+        this.renderer.setSize(window.innerWidth - 1, window.innerHeight - 3);
 
         if (this.config.isVR) {
             this.effect = new StereoEffect(this.renderer);

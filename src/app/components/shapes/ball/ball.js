@@ -69,7 +69,10 @@ class Ball implements Syncronizable {
        
         this.initMesh()
 
-        this.body.position.set(position.x || 0, position.y || 10, position.z || 10);
+        if (position) {
+            const { x, y, z } = position;
+            this.body.position.set(x || 0, y || 10, z || 10);
+        }
     }
 
     initMesh() {

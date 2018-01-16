@@ -1,3 +1,5 @@
+// @flow
+
 import { Scene, Light, Object3D, Mesh, Vector3, Quaternion, Fog } from 'three'
 import { Box as ModelBox, generateBoxes } from '../shapes/box'
 import * as _ from "lodash";
@@ -10,26 +12,26 @@ import { Floor } from '../terrains/floor'
 import { createPoles } from '../shapes/pole'
 
 class GameScene {
-    private scene: Scene;
-    private sky: Sky;
-    private fog: Fog;
-    private floor: Floor;
-    private physics: Physics;
-    private lights: {
+    scene: Scene;
+    sky: Sky;
+    fog: Fog;
+    floor: Floor;
+    physics: Physics;
+    lights: {
         ambient: Ambient,
         // directional: Directional
     }
-    private ball : ModelBall;
-    private socket : any;
+    ball : ModelBall;
+    socket : any;
     // --- For example only ---
-    private boxes : Array<ModelBox>;
+    boxes : Array<ModelBox>;
     // ------------------------
 
-    public getBall () : ModelBall {
+    getBall () : ModelBall {
         return this.ball;
     }
 
-    public setPhysics(physics: Physics) : void {
+    setPhysics(physics: Physics) : void {
         this.physics = physics
     }
 
@@ -42,21 +44,21 @@ class GameScene {
         this.initFog()
     }
 
-    private setSocket (socket: any) : void {
+    setSocket (socket: any) : void {
         this.socket = socket;
     }
 
-    private initFog() : void {
+    initFog() : void {
         this.fog = new Fog(0xcce0ff, 500, 1000)
     }
 
-    private initScene() : void {
+    initScene() : void {
         this.scene = new Scene();
         this.sky = new Sky();
         this.floor = new Floor();
     }
     
-    private initLights() : void {
+    initLights() : void {
         this.lights = {
             ambient: new Ambient(),
             // directional: new Directional()
@@ -66,31 +68,31 @@ class GameScene {
         // this.scene.add(this.lights.directional.getInstance()); // TODO: For sun shadows
     }
 
-    private fillScene() : void {
+    fillScene() : void {
         this.scene.add(this.getSky());
         this.scene.add(this.getFloor());
     }
 
 
-    public getScene() : Scene {
+    getScene() : Scene {
         return this.scene;
     }
 
-    public getSky() : Mesh {
+    getSky() : Mesh {
         if (this.sky) {
             return this.sky.getInstance();
         }
         return null;
     }
 
-    public getFloor() : Mesh {
+    getFloor() : Mesh {
         if (this.floor) {
             return this.floor.getInstance();
         }
         return null;
     }
     
-    public addBall() : void {
+    addBall() : void {
         this.ball = new ModelBall({
             radius: 5,
             weight: 0.01,
@@ -105,7 +107,7 @@ class GameScene {
         this.scene.add(this.ball.getMesh())
     }
 
-    public addPoles() : void {
+    addPoles() : void {
         const poles = createPoles();
         poles.forEach(pole => {
             this.scene.add(pole.getMesh())
@@ -113,7 +115,7 @@ class GameScene {
     }
 
     // For example only
-    public addBoxes() : void {
+    addBoxes() : void {
         const boxes = generateBoxes()
         this.boxes = boxes || []
         for (let i = 0; i < this.boxes.length; i++) {
@@ -122,18 +124,18 @@ class GameScene {
         }
     }    
 
-    public animate(socket? : any) {
+    animate(socket? : any) {
         this.animateBall();
         // this.animateBoxes();
 
         let i = 0;
     }
     
-    public animateBall() : void {
+    animateBall() : void {
         this.ball.synchronize()
     }
 
-    public animateBoxes() {
+    animateBoxes() {
         for (let i = 0; i < this.boxes.length; i++) {
             this.boxes[i].synchronize()            
         }

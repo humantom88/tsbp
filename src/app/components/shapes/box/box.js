@@ -1,3 +1,4 @@
+// @flow
 import { Vec3, Box as CannonBox, Body } from "cannon"
 import { Color, BoxGeometry, MeshLambertMaterial,
     Mesh, Material, Texture, TextureLoader,
@@ -7,28 +8,28 @@ import { Syncronizable } from '../interfaces'
 const image = require('./images/box.jpg')
 
 class Box implements Syncronizable {
-    private halfExtents : Vec3;
-    private boxShape : CannonBox;
-    private boxGeometry : BoxGeometry;
-    private body : Body;
-    private mesh: Mesh;
-    private material : Material;
-    private map : Texture;
+    halfExtents : Vec3;
+    boxShape : CannonBox;
+    boxGeometry : BoxGeometry;
+    body : Body;
+    mesh: Mesh;
+    material : Material;
+    map : Texture;
 
-    public setMaterial(material : Material) {
+    setMaterial(material : Material) {
         this.material = material
     }
 
-    public setPosition(x : number, y : number, z : number) : void {
+    setPosition(x : number, y : number, z : number) : void {
         this.body.position.set(x, y, z)
         this.mesh.position.set(x, y, z)
     }
 
-    public getBody() : Body {
+    getBody() : Body {
         return this.body
     }
 
-    public getMesh() : Mesh {
+    getMesh() : Mesh {
         return this.mesh
     }
 
@@ -52,17 +53,17 @@ class Box implements Syncronizable {
         this.initMesh()
     }
 
-    private initMesh() {
+    initMesh() {
         this.mesh = new Mesh(this.boxGeometry, this.material)
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
     }
 
-    private initColoredMaterial(color : string) {
+    initColoredMaterial(color : string) {
         this.material = new MeshLambertMaterial({ color })
     }
 
-    private initTexturedMaterial () {
+    initTexturedMaterial () {
         this.map = new TextureLoader().load(image);
         this.map.wrapS = this.map.wrapT = RepeatWrapping
         this.map.anisotropy = 16
@@ -75,7 +76,7 @@ class Box implements Syncronizable {
         )
     }
 
-    public synchronize() : void {
+    synchronize() : void {
         this.mesh.position.copy(
             new Vector3(
                 this.body.position.x,

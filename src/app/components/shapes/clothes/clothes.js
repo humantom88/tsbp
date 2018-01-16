@@ -1,20 +1,21 @@
+// @flow
 import { TextureLoader, DoubleSide, Material, RepeatWrapping, Texture, MeshPhongMaterial, ParametricGeometry, ShaderMaterial } from 'three'
 
 class Clothes {
-    private texture : Texture;
-    private material : Material;
+    texture : Texture;
+    material : Material;
     constructor() {
         this.initTexture()
         this.initMaterial()
     }
 
-    private initTexture() : void {
+    initTexture() : void {
         this.texture = new TextureLoader().load( './images/circuit_pattern.png' );
         this.texture.wrapS = this.texture.wrapT = RepeatWrapping;
         this.texture.anisotropy = 16;
     }
 
-    private initMaterial() : void {
+    initMaterial() : void {
         this.material = new MeshPhongMaterial( {
             specular: 0x030303,
             map: this.texture,

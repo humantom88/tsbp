@@ -1,9 +1,10 @@
+// @flow
 import { Camera, PerspectiveCamera } from 'three'
 
 class Perspective {
-    private camera : PerspectiveCamera;
+    camera : PerspectiveCamera;
 
-    public getInstance() : PerspectiveCamera {
+    getInstance() : PerspectiveCamera {
         return this.camera
     }
 

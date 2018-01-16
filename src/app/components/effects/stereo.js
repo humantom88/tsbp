@@ -1,12 +1,13 @@
+// @flow
 import { StereoCamera, Renderer, Scene, Camera  } from 'three'
 
 class StereoEffect {
-    private aspect : number = 0.5;
-    private stereo : StereoCamera;
-    private renderer : Renderer;
-    private eyeSep : number;
+    aspect : number = 0.5;
+    stereo : StereoCamera;
+    renderer : Renderer;
+    eyeSep : number;
     
-    private initStereoCamera() {
+    initStereoCamera() {
         this.stereo = new StereoCamera()
     }
 

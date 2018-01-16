@@ -1,3 +1,4 @@
+// @flow
 import { Camera, WebGLRenderer, PCFSoftShadowMap, Scene } from 'three';
 import { Physics } from './components/physics';
 import { Perspective, Orthographic } from './components/cameras'
@@ -11,31 +12,31 @@ interface Runnable {
     run() : void;
 }
 
-class App implements Runnable {
-    private title: string;
-    private scene: GameScene;
-    private camera: Perspective | Orthographic;
-    private controls: PointerLock;
-    private renderer: WebGLRenderer;
-    private effect: StereoEffect;
-    private physics: Physics;
-    private dt : number = 1 / 60;
-    private time = Date.now();
-    private socket: any;
+export class App implements Runnable {
+    title: string;
+    scene: GameScene;
+    camera: Perspective | Orthographic;
+    controls: PointerLock;
+    renderer: WebGLRenderer;
+    effect: StereoEffect;
+    physics: Physics;
+    dt : number = 1 / 60;
+    time = Date.now();
+    socket: any;
 
-    public getTime() : number {
+    getTime() : number {
         return this.time
     }
 
-    public setTime(time : number) : void {
+    setTime(time : number) : void {
         this.time = time
     }
 
-    public getScene() : Scene {
+    getScene() : Scene {
         return this.scene.getScene() // TODO: Dependency Injection
     }
 
-    public constructor(title: string, socket: any) {
+    constructor(title: string, socket: any) {
         this.title = title;
         this.initSocket(socket);
         this.initPhysics();
@@ -46,41 +47,43 @@ class App implements Runnable {
         this.initSocketListeners();
     }
 
-    private initSocket(socket : any) : void {
+    initSocket(socket : any) : void {
         this.socket = socket;
     }
 
-    private initSocketListeners() : void {
-        this.socket.on('updateBallCoordinates',
-            (coordinates: any) => {
-                console.log('got coords')
-                if (coordinates) {
-                    this.scene.getBall().updateBodyCoordinates(coordinates);
+    initSocketListeners() : void {
+        if (this.socket) {
+            this.socket.on('updateBallCoordinates',
+                (coordinates: any) => {
+                    console.log('got coords')
+                    if (coordinates) {
+                        this.scene.getBall().updateBodyCoordinates(coordinates);
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
-    private initPhysics() {
+    initPhysics() {
         this.physics = new Physics();
     }
 
-    private initScene = (physics : Physics) : void => {
+    initScene = (physics : Physics) : void => {
         this.scene = new GameScene(physics, this.socket);
         this.scene.addBall();
         this.scene.addPoles();
         // this.scene.addBoxes();
     }
 
-    private initCamera = () : void => {
+    initCamera = () : void => {
         this.camera = new Perspective();
     }
 
-    public getCamera () : Camera {
+    getCamera () : Camera {
         return this.camera.getInstance()
     }
 
-    private initControls = () : void => {
+    initControls = () : void => {
         this.controls = new PointerLock(this.getCamera(), this.physics.getBody())
         this.controls.getCannonBody().addEventListener('collide', (e: any) => {
             if (e.contact.bi.id === this.controls.getCannonBody().id &&
@@ -98,7 +101,7 @@ class App implements Runnable {
         this.scene.getScene().add(this.controls.getYawObject())
     }
 
-    private initRenderer = () : void => {
+    initRenderer = () : void => {
         this.renderer = new WebGLRenderer();
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = PCFSoftShadowMap;
@@ -106,13 +109,18 @@ class App implements Runnable {
 
         if (isVR) {
             this.effect = new StereoEffect(this.renderer);
-            document.body.appendChild(this.effect.getRenderer().domElement)
+            
+            if (document.body && this.effect.getRenderer().domElement !== null) {
+                document.body.appendChild(this.effect.getRenderer().domElement);
+            }
         } else {
-            document.body.appendChild(this.renderer.domElement);
+            if (document.body && this.renderer !== null) {
+                document.body.appendChild(this.renderer.domElement);
+            }
         }
     }
 
-    private render = () : void => {
+    render = () : void => {
         requestAnimationFrame(this.render);
         //if (this.controls.getEnabled()) {
             this.physics.getWorld().step(this.dt)
@@ -137,10 +145,8 @@ class App implements Runnable {
         this.setTime(Date.now());
     }
 
-    public run = () : void => {
+    run = () : void => {
         this.render()
     }
 
 }
-
-export { App };

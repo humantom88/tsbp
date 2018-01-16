@@ -1,3 +1,4 @@
+// @flow
 import { SphereGeometry, Vector2, Mesh,
     BackSide, TextureLoader, Texture,
     MeshPhongMaterial, RepeatWrapping } from 'three';
@@ -5,10 +6,10 @@ import { SphereGeometry, Vector2, Mesh,
 const skyImage = require('./texture/sky_texture1984.jpg');
 
 class Sky {
-    private skySphere: SphereGeometry;
-    private texture: Texture;
-    private material: MeshPhongMaterial;
-    private sky: Mesh;
+    skySphere: SphereGeometry;
+    texture: Texture;
+    material: MeshPhongMaterial;
+    sky: Mesh;
 
     constructor() {
         this.skySphere = new SphereGeometry(900, 25, 25)

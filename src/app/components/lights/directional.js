@@ -1,7 +1,8 @@
+// @flow
 import { DirectionalLight } from "three"
 
 class Directional {
-    private light : DirectionalLight;
+    light : DirectionalLight;
     
     constructor() {
         this.light = new DirectionalLight(0x999999, 1.75)
@@ -20,7 +21,7 @@ class Directional {
         this.light.shadow.camera.far = 1000
     }
 
-    public getInstance() : DirectionalLight {
+    getInstance() : DirectionalLight {
         return this.light;
     }
 }

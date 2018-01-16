@@ -1,43 +1,44 @@
+// @flow
 import { World, GSSolver, SplitSolver, Vec3,
     Material, NaiveBroadphase, ContactMaterial,
     Sphere, Body, Plane } from 'cannon'
 
 class Physics {
-    private world: World;
-    private solver: GSSolver;
-    private isSplit: boolean;
-    private sphereShape: Sphere;
-    private sphereBody: Body;
+    world: World;
+    solver: GSSolver;
+    isSplit: boolean;
+    sphereShape: Sphere;
+    sphereBody: Body;
 
-    private setSplit(isSplit : boolean) : void {
+    setSplit(isSplit : boolean) : void {
         this.isSplit = isSplit;
     }
 
-    private getSplit() : boolean {
+    getSplit() : boolean {
         return this.isSplit;
     }
     
-    private setWorld(world? : World) : void {
+    setWorld(world? : World) : void {
         this.world = world || new World();
     }
 
-    private setSolver(solver? : GSSolver) : void {
+    setSolver(solver? : GSSolver) : void {
         this.solver = solver || new GSSolver();
     }
 
-    private getSolver() : GSSolver {
+    getSolver() : GSSolver {
         return this.solver
     }
 
-    public getWorld() : World {
+    getWorld() : World {
         return this.world;
     }
 
-    public getShape() : Sphere {
+    getShape() : Sphere {
         return this.sphereShape;
     }
 
-    public getBody() : Body {
+    getBody() : Body {
         return this.sphereBody;
     }
 
@@ -47,7 +48,7 @@ class Physics {
         this.initSolver();
     }
 
-    private initWorld() : void {
+    initWorld() : void {
         this.setWorld();
         this.world.quatNormalizeSkip = 0
         this.world.quatNormalizeFast = false
@@ -80,7 +81,7 @@ class Physics {
         this.world.addBody(groundBody)
     }
 
-    private initSphere() : void {
+    initSphere() : void {
         let mass = 5, radius = 1.3
         this.sphereShape = new Sphere(radius)
         this.sphereBody = new Body({ mass: mass })
@@ -91,7 +92,7 @@ class Physics {
         this.world.addBody(this.sphereBody)
     }
 
-    private initSolver() : void {
+    initSolver() : void {
         this.setSolver()
         this.solver.iterations = 7
         this.solver.tolerance = 0.1

@@ -1,3 +1,4 @@
+// @flow
 import { Mesh, Texture, Material,
     SphereGeometry, MeshLambertMaterial,
     TextureLoader, RepeatWrapping,
@@ -8,36 +9,36 @@ import { Syncronizable } from '../interfaces'
 const image = require('./images/ball.jpg')
 
 class Ball implements Syncronizable {
-    private vector : Vec3;
-    private ballShape : Sphere;
-    private ballGeometry : SphereGeometry;
-    private body : Body;
-    private mesh: Mesh;
-    private material : Material;
-    private map : Texture;
+    vector : Vec3;
+    ballShape : Sphere;
+    ballGeometry : SphereGeometry;
+    body : Body;
+    mesh: Mesh;
+    material : Material;
+    map : Texture;
 
-    public setMaterial(material : Material) {
+    setMaterial(material : Material) {
         this.material = material
     }
 
-    public setPosition(x : number, y : number, z : number) : void {
+    setPosition(x : number, y : number, z : number) : void {
         this.body.position = new Vec3(x, y, z);
         this.mesh.position = new Vector3(x, y, z);
     }
 
-    public getBody() : Body {
+    getBody() : Body {
         return this.body
     }
 
-    public getMesh() : Mesh {
+    getMesh() : Mesh {
         return this.mesh
     }
     
-    public getShape = () => {
+    getShape = () => {
         return this.ballShape
     }
 
-    public getBall = () => ({
+    getBall = () => ({
         body: this.body,
         mesh: this.mesh,
         shape: this.ballShape
@@ -71,17 +72,17 @@ class Ball implements Syncronizable {
         this.body.position.set(position.x || 0, position.y || 10, position.z || 10);
     }
 
-    private initMesh() {
+    initMesh() {
         this.mesh = new Mesh(this.ballGeometry, this.material)
         this.mesh.castShadow = true
         this.mesh.receiveShadow = true
     }
 
-    private initColoredMaterial(color : string) {
+    initColoredMaterial(color : string) {
         this.material = new MeshLambertMaterial({ color })
     }
 
-    private initTexturedMaterial () {
+    initTexturedMaterial () {
         this.map = new TextureLoader().load(image);
         this.map.wrapS = RepeatWrapping
         this.map.wrapT = RepeatWrapping
@@ -95,7 +96,7 @@ class Ball implements Syncronizable {
         )
     }
 
-    public updateBodyCoordinates (coordinates: any) : void {
+    updateBodyCoordinates (coordinates: any) : void {
         const { position, velocity, quaternion, angularVelocity } = coordinates;
 
         this.body.position.set(position.x, position.y, position.z);
@@ -105,7 +106,7 @@ class Ball implements Syncronizable {
         this.synchronize()
     }
 
-    public synchronize() : void {
+    synchronize() : void {
         this.mesh.position.copy(
             new Vector3(
                 this.body.position.x,

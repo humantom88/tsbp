@@ -1,20 +1,22 @@
+// @flow
+
 import { BoxGeometry, MeshPhongMaterial, Mesh, Vector3, Quaternion } from 'three'
 import { Vec3, Box, Shape, Body } from 'cannon'
 import { Syncronizable } from '../interfaces'
 
 class Pole implements Syncronizable {
-    private halfExtents : Vec3
-    private poleGeo : BoxGeometry;
-    private poleMat : MeshPhongMaterial;
-    private shape : Shape;
-    private mesh : Mesh;
-    private body : Body;
+    halfExtents : Vec3
+    poleGeo : BoxGeometry;
+    poleMat : MeshPhongMaterial;
+    shape : Shape;
+    mesh : Mesh;
+    body : Body;
 
-    public getMesh() : Mesh {
+    getMesh() : Mesh {
         return this.mesh
     }
 
-    public getBody() : Body {
+    getBody() : Body {
         return this.body
     }
 
@@ -26,7 +28,7 @@ class Pole implements Syncronizable {
         this.synchronize();
     }
 
-    public synchronize() : void {
+    synchronize() : void {
         // this.mesh.position.copy(
         //     new Vector3(
         //         this.body.position.x,
@@ -44,14 +46,14 @@ class Pole implements Syncronizable {
         // )
     }
 
-    private initPhysics() : void {
+    initPhysics() : void {
         this.halfExtents = new Vec3(1, 1, 1)
         this.shape = new Box(this.halfExtents)
         this.body = new Body({ mass: 10000 })
         this.body.addShape(this.shape)
     }
 
-    private initMesh(x : number, y : number) {
+    initMesh(x : number, y : number) {
         this.mesh = new Mesh( this.poleGeo, this.poleMat );
         this.mesh.position.x = x;
         this.mesh.position.y = y;

@@ -1,74 +1,76 @@
+// @flow
 import { Object3D, Quaternion, Camera, Vector3, Euler } from 'three'
+import _ from 'lodash';
 import { Vec3, Body } from 'cannon'
 
 const PI_2 = Math.PI / 2
 
 class PointerLock {
-    private camera: Camera;
-    private cannonBody: Body;
+    camera: Camera;
+    cannonBody: Body;
     // position
-    private eyeYPos: number;
-    private velocityFactor: number;
-    private jumpVelocity: number;
+    eyeYPos: number;
+    velocityFactor: number;
+    jumpVelocity: number;
     
-    private pitchObject: Object3D;
-    private yawObject: Object3D;
+    pitchObject: Object3D;
+    yawObject: Object3D;
 
-    public quat: Quaternion;
+    quat: Quaternion;
 
     // Movement Flags
-    private moveForward: boolean;
-    private moveBackward: boolean;
-    private moveLeft: boolean;
-    private moveRight: boolean;
-    private canJump: boolean;
+    moveForward: boolean;
+    moveBackward: boolean;
+    moveLeft: boolean;
+    moveRight: boolean;
+    canJump: boolean;
 
     // Vectors
-    private contactNormal: Vec3;    // Cannon
-    private upAxis: Vec3;           // Cannon
-    private inputVelocity: Vector3; // Three
+    contactNormal: Vec3;    // Cannon
+    upAxis: Vec3;           // Cannon
+    inputVelocity: Vector3; // Three
 
-    private euler: Euler;
+    euler: Euler;
 
-    private enabled: boolean;
+    enabled: boolean;
 
-    public getEnabled() : boolean {
+    getEnabled() : boolean {
         return this.enabled
     }
 
-    public setEnabled(enabled: boolean) : void {
+    setEnabled(enabled: boolean) : void {
         this.enabled = enabled;
     }
 
-    public getUpAxis() : Vec3 {
+    getUpAxis() : Vec3 {
         return this.upAxis
     }
 
-    public setCamera(camera: Camera) : void {
+    setCamera(camera: Camera) : void {
         this.camera = camera;
     }
 
-    public getCannonBody() : Body {
+    getCannonBody() : Body {
         return this.cannonBody
     }
 
-    public setCannonBody(cannonBody: Body) : void {
+    setCannonBody(cannonBody: Body) : void {
         this.cannonBody = cannonBody;
     }
 
-    public setContactNormal(contactNormal?: Vec3) : void{
+    setContactNormal(contactNormal?: Vec3) : void{
         this.contactNormal = contactNormal || new Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
     }
 
-    public setUpAxis(upAxis?: Vec3) : void {
+    setUpAxis(upAxis?: Vec3) : void {
         this.upAxis = upAxis || new Vec3(0, 1, 0)
     }
 
-    public getYawObject() : Object3D {
+    getYawObject() : Object3D {
         return this.yawObject;
     }
 
-    private getDirection(targetVec: Vec3) : void {
+    getDirection(targetVec: Vec3) : void {
         targetVec.set(0, 0, -1)
         this.quat.multiplyVector3(targetVec)
     }
@@ -92,47 +94,47 @@ class PointerLock {
         this.initEuler()
     }
 
-    private initCannonBody(cannonBody: Body) {
+    initCannonBody(cannonBody: Body) {
         this.setCannonBody(cannonBody)
         this.cannonBody.addEventListener('collide', this.collide)
     }
 
-    public initInputVelocity() : void {
+    initInputVelocity() : void {
         if (!this.inputVelocity) {
             this.inputVelocity = new Vector3();
         }
     }
 
-    public initEuler() : void {
+    initEuler() : void {
         if (!this.euler) {
             this.euler = new Euler();
         }
     }
     
-    private initEventListeners = () : void => {
+    initEventListeners = () : void => {
         document.addEventListener('mousemove', this.onMouseMove, false)
         document.addEventListener('keydown', this.onKeyDown, false)
         document.addEventListener('keyup', this.onKeyUp, false)
     }
 
-    private initPosition() : void {
+    initPosition() : void {
         this.eyeYPos = 2 // eyes are 2 meters above the ground
         this.velocityFactor = 0.3
         this.jumpVelocity = 75
     }
 
-    private initPitchObject() : void {
+    initPitchObject() : void {
         this.pitchObject = new Object3D()
         this.pitchObject.add(this.camera)
     }
 
-    private initYawObject() : void {
+    initYawObject() : void {
         this.yawObject = new Object3D()
         this.yawObject.position.y = 2
         this.yawObject.add(this.pitchObject)
     }
 
-    private initFlags() : void {
+    initFlags() : void {
         this.moveForward = false
         this.moveBackward = false
         this.moveLeft = false
@@ -140,12 +142,12 @@ class PointerLock {
         this.canJump = true
     }
 
-    private initPointerLock = () : void => {
+    initPointerLock = () : void => {
         const blocker = document.getElementById('blocker')
         const instructions = document.getElementById('instructions')
     
         if (!instructions) { 
-            return null;
+            return;
         }
 
         const havePointerLock = 'pointerLockElement' in document
@@ -158,14 +160,17 @@ class PointerLock {
             const pointerlockchange = (event: Event) => {
                 if (document.pointerLockElement === element) {
                     this.setEnabled(true)
-                    blocker.style.display = 'none'
+                    if (blocker && blocker.style) {
+                        blocker.style.display = 'none';
+                    }
                 } else {
                     this.setEnabled(false)
-    
-                    blocker.style.display = '-webkit-box'
-                    blocker.style.display = '-moz-box'
-                    blocker.style.display = 'box'
-    
+                    if (blocker && blocker.style) {
+                        blocker.style.display = '-webkit-box';
+                        blocker.style.display = '-moz-box';
+                        blocker.style.display = 'box';
+                    }
+
                     instructions.style.display = ''
                 }
             }
@@ -187,7 +192,8 @@ class PointerLock {
                 instructions.style.display = 'none'
     
                 // Ask the browser to lock the pointer
-                element.requestPointerLock = element.requestPointerLock // || element.mozRequestPointerLock || element.webkitRequestPointerLock
+
+                // element.requestPointerLock = element.requestPointerLock // || element.mozRequestPointerLock || element.webkitRequestPointerLock
     
                 if (/Firefox/i.test(navigator.userAgent)) {
     
@@ -197,8 +203,9 @@ class PointerLock {
     
                             document.removeEventListener('fullscreenchange', fullscreenchange)
                             document.removeEventListener('mozfullscreenchange', fullscreenchange)
-    
-                            element.requestPointerLock()
+                            if (element) {
+                                element.requestPointerLock()
+                            }
                         }
     
                     }
@@ -207,10 +214,13 @@ class PointerLock {
                     document.addEventListener('mozfullscreenchange', fullscreenchange, false)
     
                     // element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-    
-                    element.requestFullscreen()
+                    if (element) {
+                        element.requestFullscreen();
+                    }
                 } else {
-                    element.requestPointerLock()
+                    if (element) {
+                        element.requestPointerLock();
+                    }
                 }
             }, false)
     
@@ -315,7 +325,7 @@ class PointerLock {
         this.copyYawPositionToCannonBody()
     }
 
-    private copyYawPositionToCannonBody() {
+    copyYawPositionToCannonBody() {
         this.yawObject.position.x = this.cannonBody.position.x;
         this.yawObject.position.y = this.cannonBody.position.y;
         this.yawObject.position.z = this.cannonBody.position.z;

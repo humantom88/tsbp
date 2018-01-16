@@ -1,8 +1,6 @@
-import { GUI } from 'dat-gui'
+// @flow
 
-declare global {
-    interface Window { guiobject: any; }
-}
+import { GUI } from 'dat-gui'
 
 interface GUIOption {
     name: string,

@@ -1,7 +1,8 @@
+// @flow
 import { OrthographicCamera, Camera } from 'three'
 
 class Orthographic {
-    private camera : OrthographicCamera
+    camera : OrthographicCamera
     constructor () {
         const frustumSize = 1000;
         const aspect = window.innerWidth / window.innerHeight
@@ -16,7 +17,7 @@ class Orthographic {
         this.camera.position.y = 12;
     }
 
-    public getInstance() : Camera {
+    getInstance() : Camera {
         return this.camera;
     }
 }

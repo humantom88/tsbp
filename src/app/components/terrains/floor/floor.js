@@ -1,3 +1,4 @@
+// @flow
 import { TextureLoader, Texture, MeshPhongMaterial,
     RepeatWrapping, Vector2, PlaneBufferGeometry,
     Mesh, FlatShading } from 'three'
@@ -5,10 +6,10 @@ import { TextureLoader, Texture, MeshPhongMaterial,
 const image = require('./images/sand.jpg')
 
 class Floor {
-    private floorTexture: Texture;
-    private floorMaterial: MeshPhongMaterial;
-    private geometry: PlaneBufferGeometry;
-    private floor: Mesh;
+    floorTexture: Texture;
+    floorMaterial: MeshPhongMaterial;
+    geometry: PlaneBufferGeometry;
+    floor: Mesh;
 
     constructor() {
         this.initFloorTexture();
@@ -17,7 +18,7 @@ class Floor {
         this.initFloor()
     }
 
-    private initFloor() : void {
+    initFloor() : void {
         this.floor = new Mesh(this.geometry, this.floorMaterial)
         this.floor.rotation.x = -0.5 * Math.PI
         this.floor.position.y = 0
@@ -25,14 +26,14 @@ class Floor {
         this.floor.receiveShadow = true
     }
 
-    private initFloorTexture() : void {
+    initFloorTexture() : void {
         this.floorTexture = new TextureLoader().load(image)
         this.floorTexture.wrapS = RepeatWrapping
         this.floorTexture.wrapT = RepeatWrapping
         this.floorTexture.repeat = new Vector2(50, 50)
     }
 
-    public initFloorMaterial() : void {
+    initFloorMaterial() : void {
         this.floorMaterial = new MeshPhongMaterial({
             color: 0xffffff,
             specular: 0xffffff,
@@ -42,7 +43,7 @@ class Floor {
         })
     }
 
-    public getInstance() : Mesh {
+    getInstance() : Mesh {
         return this.floor;
     }
 }

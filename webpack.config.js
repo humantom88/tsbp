@@ -19,30 +19,22 @@ module.exports = {
         }]
     },
 
-    resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
-    },
-
     module: {
-        loaders: [{
-            test: /\.nes$/,
+        rules: [{
+            test: /\.(png|jpe?g|gif|nes)$/i,
             loader: 'file-loader',
+            options: {
+                name: '[path][name].[ext]',
+            },
         }, {
             test: /\.json$/,
             loader: 'json-loader'
         }, {
-            test: /\.tsx?$/,
-            loader: 'awesome-typescript-loader',
-            exclude: /node_modules/,
-            include: path.join(__dirname, 'src')
-        },
-        {
             test: /\.js|\.jsx$/,
             exclude: /node_modules/,
-            loaders: ['babel'],
+            loaders: ['babel-loader'],
             include: path.join(__dirname, 'src')
-        },
-        {
+        }, {
             test: /\.css$/,
             exclude: /node_modules/,
             loaders: [
@@ -51,12 +43,22 @@ module.exports = {
                 'typed-css-modules-loader',
                 'postcss-loader'
             ]
-        }],
-
-        preLoaders: [
-            { test: /\.js$/, loader: 'source-map-loader' }
-        ]
+        }, {
+            test: /\.tsx?$/,
+            loader: 'awesome-typescript-loader',
+            exclude: /node_modules/,
+            include: path.join(__dirname, 'src')
+        }]
     },
+
+    resolve: {
+        modules: [
+            "node_modules",
+            path.resolve(__dirname, "src")
+        ],
+        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+    },
+
     plugins: [
         new CheckerPlugin()
     ]

@@ -34,7 +34,7 @@
     "babel-preset-react": "^6.22.0",
     "classnames": "^2.2.5",
     "concurrently": "^3.1.0",
-    "css-loader": "^0.26.1",
+    "css-loader": "^3.5.3",
     "dendy": "^1.0.2",
     "file-loader": "^0.10.0",
     "json-loader": "^0.5.4",
@@ -46,8 +46,9 @@
     "typed-css-modules": "^0.1.13",
     "typed-css-modules-loader": "0.0.4",
     "typescript": "^2.1.5",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   },
   "repository": {
     "type": "git",
